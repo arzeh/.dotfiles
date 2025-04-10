@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/ebb88c3428dcdd95c06dca4d49b9791a65ab777b";
+    nix-darwin.url = "github:LnL7/nix-darwin/53d0f0ed11487a4476741fde757d0feabef4cc4e";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 	nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
@@ -50,7 +50,6 @@
 		  pkgs.mkalias
           pkgs.neovim
           pkgs.nodejs
-		  pkgs.postgresql_16
 		  pkgs.ripgrep
           pkgs.stow
 		  pkgs.tmux
@@ -74,6 +73,7 @@
 		  "jandedobbeleer/oh-my-posh/oh-my-posh"
 		  "notion"
 		  "obs"
+		  "steam"
 		];
 		onActivation.cleanup = "zap";
 		onActivation.autoUpdate = true;
@@ -99,22 +99,6 @@
           ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
         done
             '';
-	
-	  system.activationScripts.preActivation = {
-		enable = true;
-		text = ''
-		  if [ ! -d "var/lib/postgresql" ]; then
-		    echo "creating postgresql data directory..."
-			sudo mkdir -m 750 -p /var/lib/postgresql/
-			chown -R arze:staff /var/lib/postgresql/
-		  fi
-		'';
-	  };
-
-	  services.postgresql = {
-		enable = true;
-		package = pkgs.postgresql_16;
-	  };
 
 	  system.defaults = {
 	    dock.autohide = true;
@@ -131,9 +115,9 @@
 
       # Enable alternative shell support in nix-darwin.
       programs.fish.enable = true;
-	  users.knownUsers = [ "arze" ];
-	  users.users.arze.uid = 501;
-	  users.users.arze.shell = pkgs.fish;
+	  users.knownUsers = [ "alejandro" ];
+	  users.users.alejandro.uid = 501;
+	  users.users.alejandro.shell = pkgs.fish;
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -156,7 +140,7 @@
 		  nix-homebrew = {
 			enable = true;
 			enableRosetta = true;
-			user = "arze";
+			user = "alejandro";
 		  };
 		}
 	  ];
