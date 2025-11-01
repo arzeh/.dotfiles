@@ -16,7 +16,9 @@ return {
 		'hrsh7th/cmp-nvim-lua',
 
 		'L3MON4D3/LuaSnip',
-		'rafamadriz/friendly-snippets'
+		'rafamadriz/friendly-snippets',
+
+		'roobert/tailwindcss-colorizer-cmp.nvim'
 	},
 	config = function()
 		local lsp = require('lsp-zero')
@@ -45,32 +47,45 @@ return {
 
 		require('mason').setup({})
 		require('mason-lspconfig').setup({
-			ensure_installed = { 'tsserver', 'lua_ls', 'rust_analyzer' },
+			ensure_installed = { 'ts_ls', 'lua_ls', 'rust_analyzer' },
 			handlers = {
 				lsp.default_setup,
 				lua_ls = function()
 					local lua_opts = lsp.nvim_lua_ls()
 					require('lspconfig').lua_ls.setup(lua_opts)
+				end,
+				tailwindcss = function()
+					require('lspconfig').tailwindcss.setup({
+						filetypes = { 'html' },
+					})
 				end
 			}
 		})
 
 		local cmp = require('cmp')
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
-		local cmp_mappings = lsp.defaults.cmp_mappings({
+		local cmp_mappings = {
 			['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
 			['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
 			['<C-y>'] = cmp.mapping.confirm({ select = true }),
 			['<C-Space>'] = cmp.mapping.complete()
-		})
+		}
 
+		local tailwind = require('tailwindcss-colorizer-cmp').formatter
 		cmp.setup({
-			formatting = lsp.cmp_format(),
+			formatting = {
+				format = function(entry, vim_item)
+					vim_item = lsp.cmp_format().format(entry, vim_item)
+					vim_item = tailwind(entry, vim_item)
+					return vim_item
+				end
+			},
 			mapping = cmp.mapping.preset.insert(cmp_mappings),
 			sources = {
 				{ name = 'path' },
 				{ name = 'nvim_lsp' },
-				{ name = 'nvim_lua' }
+				{ name = 'nvim_lua' },
+				{ name = 'supermaven' }
 			}
 		})
 	end

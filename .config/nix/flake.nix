@@ -2,8 +2,8 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/53d0f0ed11487a4476741fde757d0feabef4cc4e";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 	nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
@@ -24,60 +24,76 @@
 	  '';
 	};
 	in
-	let alacritty-theme = pkgs.stdenv.mkDerivation {
-	  name = "alacritty-theme";
-	  src = pkgs.fetchFromGitHub {
-	    owner = "alacritty";
-		repo = "alacritty-theme";
-		rev = "aff9d111d43e1ad5c22d4e27fc1c98176e849fb9";
-		sha256 = "IQubMo048bS+RFw/5Gcwlj6fTuadn8r2Q1kZ3ezJR9Q=";
-	  };
-	  installPhase = ''
-	  cp -r $src $out
-	  '';
-	};
-	in
 	{
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [
-		  alacritty-theme
           pkgs.alacritty
+		  pkgs.docker
 		  pkgs.elixir_1_18
           pkgs.fish
           pkgs.git
+		  pkgs.just
 		  pkgs.mkalias
           pkgs.neovim
           pkgs.nodejs
+		  pkgs.php82
+		  pkgs.php82Packages.composer
+		  pkgs.python311
+		  pkgs.python311Packages.pip
+		  pkgs.redis
 		  pkgs.ripgrep
+		  pkgs.rustup
           pkgs.stow
 		  pkgs.tmux
 		  pkgs.twitch-cli
+		  pkgs.xz
 		  pkgs.yarn
+		  pkgs.zig
 		  pkgs.zoxide
 		  tmuxplugins
         ];
 	  
 	  fonts.packages = [
+		pkgs.nerd-fonts.fira-code
 	    pkgs.nerd-fonts.jetbrains-mono
 	  ];
 
 	  homebrew = {
 		enable = true;
+		brews = [
+			"imagemagick"
+			{
+				name = "postgresql@17";
+				start_service = true;
+			}
+		];
 		casks = [
 		  "amethyst"
 		  "discord"
 		  "firefox"
+		  "ghostty"
 		  "google-chrome"
-		  "jandedobbeleer/oh-my-posh/oh-my-posh"
 		  "notion"
 		  "obs"
+		  "rar"
 		  "steam"
 		];
 		onActivation.cleanup = "zap";
 		onActivation.autoUpdate = true;
 		onActivation.upgrade = true;
+	  };
+
+	  services.postgresql = {
+		enable = true;
+		package = pkgs.postgresql_16;
+		dataDir = "~/.local/share/postgres";
+		authentication = ''
+		local   all   all                  trust
+		host    all   all   127.0.0.1/32   trust
+		host    all   all   ::1/128        trust
+		'';
 	  };
 
       system.activationScripts.applications.text = let
@@ -103,8 +119,8 @@
 	  system.defaults = {
 	    dock.autohide = true;
 		dock.persistent-apps = [
-		  "${pkgs.alacritty}/Applications/Alacritty.app"
 		  "/Applications/Firefox.app"
+		  "/Applications/Ghostty.app"
 		];
 		finder.FXPreferredViewStyle = "clmv";
 		NSGlobalDomain.AppleICUForce24HourTime = true;
@@ -122,12 +138,15 @@
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
+	  system.primaryUser = "alejandro";
+
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog
       system.stateVersion = 5;
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
+	  nixpkgs.config.allowUnfree = true;
     };
   in
   {
