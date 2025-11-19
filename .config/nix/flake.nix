@@ -34,10 +34,12 @@
 		  pkgs.elixir_1_18
           pkgs.fish
           pkgs.git
+		  pkgs.gleam
 		  pkgs.just
 		  pkgs.mkalias
           pkgs.neovim
           pkgs.nodejs
+		  pkgs.oh-my-posh
 		  pkgs.php82
 		  pkgs.php82Packages.composer
 		  pkgs.python311
@@ -88,7 +90,7 @@
 	  services.postgresql = {
 		enable = true;
 		package = pkgs.postgresql_16;
-		dataDir = "~/.local/share/postgres";
+		dataDir = "/Users/arze/.local/share/postgres";
 		authentication = ''
 		local   all   all                  trust
 		host    all   all   127.0.0.1/32   trust
@@ -131,14 +133,14 @@
 
       # Enable alternative shell support in nix-darwin.
       programs.fish.enable = true;
-	  users.knownUsers = [ "alejandro" ];
-	  users.users.alejandro.uid = 501;
-	  users.users.alejandro.shell = pkgs.fish;
+	  users.knownUsers = [ "arze" ];
+	  users.users.arze.uid = 501;
+	  users.users.arze.shell = pkgs.fish;
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
-	  system.primaryUser = "alejandro";
+	  system.primaryUser = "arze";
 
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog
@@ -159,7 +161,7 @@
 		  nix-homebrew = {
 			enable = true;
 			enableRosetta = true;
-			user = "alejandro";
+			user = "arze";
 		  };
 		}
 	  ];
