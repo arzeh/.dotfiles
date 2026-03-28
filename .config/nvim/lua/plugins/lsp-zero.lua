@@ -22,7 +22,6 @@ return {
 	},
 	config = function()
 		local lsp = require('lsp-zero')
-		require('lspconfig').gleam.setup({})
 
 		lsp.on_attach(function(_, bufnr)
 			local opts = { buffer = bufnr, remap = false }
