@@ -28,3 +28,4 @@ end
 
 # opencode
 fish_add_path /Users/alejandro/.opencode/bin
+alias love="~/Downloads/love.app/Contents/MacOS/love"

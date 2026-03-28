@@ -1,7 +1,7 @@
 return {
-	-- 'catppuccin/nvim',
-	'nanotech/jellybeans.vim',
-	-- 'darianmorat/gruvdark.nvim'],
+	'catppuccin/nvim',
+	-- 'darianmorat/gruvdark.nvim',
+	-- 'Kaikacy/Lemons.nvim',
 	lazy = false,
 	priority = 1000,
 	config = function ()
@@ -20,9 +20,8 @@ return {
 			}
 		}
 
-		vim.cmd.colorscheme('catppuccin-mocha')
 		--]]
-		vim.cmd.colorscheme('jellybeans')
+		vim.cmd.colorscheme('catppuccin-mocha')
 		-- vim.cmd.colorscheme('gruvdark')
 		vim.cmd('highlight SignColumn guibg=NONE')
 	end

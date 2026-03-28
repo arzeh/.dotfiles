@@ -54,11 +54,6 @@ return {
 					local lua_opts = lsp.nvim_lua_ls()
 					require('lspconfig').lua_ls.setup(lua_opts)
 				end,
-				tailwindcss = function()
-					require('lspconfig').tailwindcss.setup({
-						filetypes = { 'html' },
-					})
-				end
 			}
 		})
 
@@ -71,12 +66,10 @@ return {
 			['<C-Space>'] = cmp.mapping.complete()
 		}
 
-		local tailwind = require('tailwindcss-colorizer-cmp').formatter
 		cmp.setup({
 			formatting = {
 				format = function(entry, vim_item)
 					vim_item = lsp.cmp_format().format(entry, vim_item)
-					vim_item = tailwind(entry, vim_item)
 					return vim_item
 				end
 			},

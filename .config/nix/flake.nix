@@ -30,16 +30,20 @@
       environment.systemPackages =
         [
           pkgs.alacritty
+		  pkgs.colima
 		  pkgs.docker
 		  pkgs.elixir_1_18
           pkgs.fish
           pkgs.git
-		  pkgs.gleam
+		  pkgs.go
+		  pkgs.jdk21_headless
 		  pkgs.just
 		  pkgs.mkalias
           pkgs.neovim
           pkgs.nodejs
 		  pkgs.oh-my-posh
+		  pkgs.opam
+		  pkgs.pandoc
 		  pkgs.php82
 		  pkgs.php82Packages.composer
 		  pkgs.python311
@@ -65,6 +69,7 @@
 	  homebrew = {
 		enable = true;
 		brews = [
+			"gleam"
 			"imagemagick"
 			{
 				name = "postgresql@17";
@@ -77,6 +82,7 @@
 		  "firefox"
 		  "ghostty"
 		  "google-chrome"
+		  "krita"
 		  "notion"
 		  "obs"
 		  "rar"
