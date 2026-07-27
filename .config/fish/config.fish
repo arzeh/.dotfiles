@@ -19,7 +19,6 @@ if status is-interactive
 	end
   end
 
-  link_from_nix_store 'alacritty-theme' ~/.config/alacritty/themes
   link_from_nix_store 'tpm' ~/.config/tmux/plugins/tpm
 
   zoxide init fish | source
@@ -29,3 +28,6 @@ end
 # opencode
 fish_add_path /Users/alejandro/.opencode/bin
 alias love="~/Downloads/love.app/Contents/MacOS/love"
+
+fish_config theme choose "Catppuccin Macchiato"
+mise activate fish | source

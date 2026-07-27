@@ -68,6 +68,10 @@ return {
 		cmp.setup({
 			formatting = {
 				format = function(entry, vim_item)
+					if entry.source.name == 'buffer' then
+						return nil
+					end
+
 					vim_item = lsp.cmp_format().format(entry, vim_item)
 					return vim_item
 				end

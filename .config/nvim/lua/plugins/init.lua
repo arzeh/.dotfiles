@@ -1,5 +1,4 @@
 return {
-	'nvim-treesitter/playground',
 	{
 		'andweeb/presence.nvim',
 		lazy = false
